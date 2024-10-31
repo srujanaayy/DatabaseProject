@@ -1,19 +1,23 @@
 CREATE DATABASE commerceDb;
 USE commerceDb;
 
-CREATE TABLE Customers(
+CREATE TABLE Customer(
     CustomerID INT Primary KEY AUTO_INCREMENT,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     EmailAddress VARCHAR(100),
     PhoneNumber VARCHAR(15),
-    ShippingAddress TEXT,
-    BillingAddress TEXT,
     CardNumber VARCHAR(19),
-    Foreign Key(OrderCreatedAtTime) references Order 
 
 );
-CREATE TABLE Products(
+
+CREATE TABLE CardInformation(
+    CardNumber VARCHAR(50) Primary KEY,
+    BillingAddress VARCHAR(50),
+    
+);
+
+CREATE TABLE Product(
     ProductID INT Primary KEY AUTO_INCREMENT,
     ProductName VARCH(255),
     ProdDescription TEXT,
@@ -30,9 +34,9 @@ CREATE TABLE Products(
 
 CREATE TABLE Order(
     OrderId INT Primary KEY AUTO_INCREMENT,
-    OrderDate TIMESTAMP,
-    OrderCreatedAtTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    OrderStatus ENUM('Pending','Shipped', 'Delivered'),
+    Date TIMESTAMP,
+    OrderTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    OrderStatus ENUM('Pending','Shipped', 'Delivered'), //this could be useful to have we don't have it in original but should we add it? 
     Foreign key(CustomerID) references Customers,
     Foreign key(ShippingAddress) references Customers
 );
@@ -46,10 +50,17 @@ CREATE TABLE OrderedItem(
 
 CREATE TABLE Payment(
     PaymentID Primary KEY AUTO_INCREMENT,
-    TotalPrice DECIMAL(10,2),
     BasePrice DECIMAL(10,2),
     Discount DECIMAL,
     Tax DECIMAL, 
     ShippingFee DECIMAL(10,2),
     Foreign key(CustomerID) references Customers
+);
+
+CREATE TABLE Price(
+    TotalPrice DECIMAL(10,2), 
+    Foreign key(BasePrice) references Payment,  
+    Foreign key(Discount) references Payment, 
+    Foreign key(Tax) references Payment, 
+    Foreign key(ShippingFee) references Payment
 );
