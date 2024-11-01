@@ -40,17 +40,6 @@ CREATE TABLE Orders (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
 
-CREATE TABLE OrderedItem (
-    ProductID INT,
-    OrderID INT, 
-    PaymentID INT,
-    Quantity INT,
-    PRIMARY KEY (ProductID, OrderID),
-    FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
-    FOREIGN KEY (ProductID) REFERENCES Product(ProductID), 
-    FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID)
-);
-
 CREATE TABLE Price(
     BasePrice DECIMAL(10,2),
     Discount DECIMAL(5,2),
@@ -74,5 +63,14 @@ CREATE TABLE Payment (
     FOREIGN KEY (ShippingFee) REFERENCES Price(ShippingFee)
 );
 
-
+CREATE TABLE OrderedItem (
+    ProductID INT,
+    OrderID INT, 
+    PaymentID INT,
+    Quantity INT,
+    PRIMARY KEY (ProductID, OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID), 
+    FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID)
+);
 
