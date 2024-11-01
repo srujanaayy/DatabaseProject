@@ -1,0 +1,4 @@
+ProductName, Description, Brand, Category, Price, StockQuantity, ReorderLevel, WarehouseLocation
+"Laptop", "High-performance laptop", "BrandA", 999.99, 15, 5, "Electronics", 10, "Warehouse 1"
+"Headphones", "Noise-cancelling headphones", "BrandB", 199.99, 200, 100, "Audio", 25, "Warehouse 2"
+"Smartphone", "Latest model smartphone", "BrandC", 799.99, 40, 10, "Electronics", 15, "Warehouse 1"
