@@ -1,18 +1,19 @@
 CREATE DATABASE commerceDb;
 USE commerceDb;
 
+CREATE TABLE CardInformation (
+    CardNumber VARCHAR(19) PRIMARY KEY,
+    BillingAddress VARCHAR(255)
+);
+
 CREATE TABLE Customer (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     EmailAddress VARCHAR(100),
     PhoneNumber VARCHAR(15),
-    CardNumber VARCHAR(19)
-);
-
-CREATE TABLE CardInformation (
-    CardNumber VARCHAR(19) PRIMARY KEY,
-    BillingAddress VARCHAR(255)
+    CardNumber VARCHAR(19),
+    FOREIGN KEY (CardNumber) REFERENCES CardInformation(CardNumber)
 );
 
 CREATE TABLE Product (
@@ -29,8 +30,8 @@ CREATE TABLE Product (
     WarehouseLocation VARCHAR(255)
 );
 
-CREATE TABLE `Order` (
-    OrderId INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
     CustomerID INT,
     Date TIMESTAMP,
     OrderTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -40,10 +41,23 @@ CREATE TABLE `Order` (
 );
 
 CREATE TABLE OrderedItem (
+    ProductID INT,
+    OrderID INT, 
+    PaymentID INT,
     Quantity INT,
-    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderId),
+    PRIMARY KEY (ProductID, OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID), 
     FOREIGN KEY (PaymentID) REFERENCES Payment(PaymentID)
+);
+
+CREATE TABLE Price(
+    BasePrice DECIMAL(10,2),
+    Discount DECIMAL(5,2),
+    Tax DECIMAL(5,2), 
+    ShippingFee DECIMAL(10,2),
+    TotalPrice DECIMAL(10,2), 
+    PRIMARY KEY(BasePrice, Discount, Tax, ShippingFee)
 );
 
 CREATE TABLE Payment (
@@ -53,14 +67,12 @@ CREATE TABLE Payment (
     Discount DECIMAL(5,2),
     Tax DECIMAL(5,2), 
     ShippingFee DECIMAL(10,2),
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (BasePrice) REFERENCES Price(BasePrice),
+    FOREIGN KEY (Discount) REFERENCES Price(Discount),
+    FOREIGN KEY (Tax) REFERENCES Price(Tax),
+    FOREIGN KEY (ShippingFee) REFERENCES Price(ShippingFee)
 );
 
-CREATE TABLE Price(
-    TotalPrice DECIMAL(10,2), 
-    Foreign key(BasePrice) references Payment(BasePrice),  
-    Foreign key(Discount) references Payment(Discount), 
-    Foreign key(Tax) references Payment(Tax), 
-    Foreign key(ShippingFee) references Payment(ShippingFee)
-);
+
 
