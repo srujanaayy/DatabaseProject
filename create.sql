@@ -33,7 +33,7 @@ CREATE TABLE Product (
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY AUTO_INCREMENT,
     CustomerID INT,
-    Date TIMESTAMP,
+    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     OrderTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Status ENUM('Pending', 'Shipped', 'Delivered'),
     ShippingAddress VARCHAR(255),
