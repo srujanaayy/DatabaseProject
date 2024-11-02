@@ -46,7 +46,7 @@ FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS 
-(CustomerID, PriceID);
+(CustomerID, BasePrice, Discount, Tax, ShippingFee);
 
 LOAD DATA INFILE 'OrderedItem.csv'
 INTO TABLE OrderedItem  
