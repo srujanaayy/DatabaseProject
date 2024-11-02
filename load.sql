@@ -3,7 +3,7 @@ INTO TABLE CardInformation
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS -- ignore header in CSV file
+IGNORE 1 ROWS 
 (CardNumber, BillingAddress);
 
 LOAD DATA INFILE 'Customer.csv'
@@ -11,47 +11,47 @@ INTO TABLE Customer
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(FirstName, LastName, EmailAddress, PhoneNumber, CardNumber); -- CustomerID not included because that is auto incremented
-
+IGNORE 1 ROWS 
+(FirstName, LastName, EmailAddress, PhoneNumber, CardNumber);
 
 LOAD DATA INFILE 'Product.csv'
 INTO TABLE Product
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(ProductName, Description, Brand, Category, Price, StockQuantity, ReorderLevel, WarehouseLocation); -- ProductID not included because that is auto incremented, timestamp related not inlcuded for similar reason
+IGNORE 1 ROWS 
+(ProductName, ProdDescription, Brand, Price, Category, StockQuantity, ReOrderLevel, WarehouseLocation)
+SET CreatedAt = NOW(), LastUpdated = NOW();
 
 LOAD DATA INFILE 'Orders.csv'
 INTO TABLE Orders  
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(CustomerID, Status, ShippingAddress); -- OrderID not included because that is auto incremented, timestamp related not inlcuded for similar reason
+IGNORE 1 ROWS 
+(CustomerID, Status, ShippingAddress)
+SET Date = NOW(), OrderTime = NOW();
 
 LOAD DATA INFILE 'Price.csv'
 INTO TABLE Price  
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(BasePrice, Discount, Tax, ShippingFee, TotalPrice); 
+IGNORE 1 ROWS 
+(BasePrice, Discount, Tax, ShippingFee, TotalPrice);
 
 LOAD DATA INFILE 'Payment.csv'
 INTO TABLE Payment  
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(CustomerID, BasePrice, Discount, Tax, ShippingFee);  -- PaymentID not included because that is auto incremented
+IGNORE 1 ROWS 
+(CustomerID, PriceID);
 
 LOAD DATA INFILE 'OrderedItem.csv'
 INTO TABLE OrderedItem  
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
-(ProductID, OrderID, PaymentID, Quantity); 
-
+IGNORE 1 ROWS 
+(ProductID, OrderID, PaymentID, Quantity);
