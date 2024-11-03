@@ -1,3 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrator Inventory View</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Inventory Management</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Stock Quantity</th>
+        <th>Reorder Level</th>
+        <th>Warehouse Location</th>
+        <th>Last Updated</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="inventory-items">
+      <!-- Inventory items will be dynamically added here -->
+    </tbody>
+  </table>
+
+  <script>
+    // Sample data for inventory
+    const inventoryData = [
+      {
+        productId: "P001",
+        productName: "Stylish Hat",
+        stockQuantity: 25,
+        reorderLevel: 10,
+        warehouseLocation: "A1",
+        lastUpdated: "2024-10-15",
+      },
+      {
+        productId: "P002",
+        productName: "Classic T-Shirt",
+        stockQuantity: 50,
+        reorderLevel: 20,
+        warehouseLoca
+      }
+    ]
+
 <html>
 <head>
     <title>Inventory Management</title>
