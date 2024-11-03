@@ -1,4 +1,6 @@
 ProductName, Description, Brand, Category, Price, StockQuantity, ReorderLevel, WarehouseLocation
-"Laptop", "High-performance laptop", "BrandA", 999.99, 15, 5, "Electronics", 10, "Warehouse 1"
-"Headphones", "Noise-cancelling headphones", "BrandB", 199.99, 200, 100, "Audio", 25, "Warehouse 2"
-"Smartphone", "Latest model smartphone", "BrandC", 799.99, 40, 10, "Electronics", 15, "Warehouse 1"
+"T-Shirt", "Cotton T-Shirt", "Urban Clothing", "Clothing", 19.99, 150, 30, "Dallas"
+"Jeans", "Denim Jeans", "Threads", "Clothing", 49.99, 100, 20, "Plano"
+"Jacket", "Leather Jacket", "Posh", "Clothing", 89.99, 50, 10, "Plano"
+"Skirt", "A-line Skirt", "Threads", "Clothing", 20.00, 46, 10, "Richardson"
+"Lace Skirt", "Lace A-line Skirt", "Threads", "Clothing", 25.00, 28, 10, "Richardson"
