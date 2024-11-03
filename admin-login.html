@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Login Page</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="login-container">
-      <h2>Administrator Login</h2>
-      <form action="admin-dashboard.html" method="POST" id="login-form">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required /><br />
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required /><br />
-
-        <button type="submit">Login</button>
-      </form>
     </div>
-  </body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form action="admin-dashboard.html" method="POST" id="admin-login-form">
+            <label for="admin-username">Username:</label>
+            <input type="text" id="admin-username" name="username" required />
+            
+            <label for="admin-password">Password:</label>
+            <input type="password" id="admin-password" name="password" required />
+            
+            <button type="submit">Login</button>
+        </form>
+
+    </div>
+</body>
 </html>
