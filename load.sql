@@ -54,4 +54,4 @@ FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS 
-(ProductID, OrderID, PaymentID, Quantity);
+(OrderID, ProductID, PaymentID, Quantity);
