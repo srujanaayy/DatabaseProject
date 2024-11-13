@@ -1,15 +1,16 @@
 /* getdata1a.php */
-//need to add a select statement, database name and password
+//add database name and password
 ?php
-$eid = $_GET['EID'];
-$pwd = $_GET['Password'];
+$cID = $_GET['cID']; 
+//SQL interjection if user input is something like 123' OR 1 = 1 #
+//will let someone get card number of customer without knowing their ID
 
 //new mysqli(name of host, mySQL username, password, name of database)
 $conn = new mysqli("localhost", "root", "password", "db");
 
-$sql = "SELECT 
-        FROM
-        WHERE"
+$sql = "SELECT CardNumber
+        FROM Customer
+        WHERE CustomerID = '$cID' "
 
 $result = $conn->query($sql);
 if($result) {
