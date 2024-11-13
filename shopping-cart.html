@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,4 +76,30 @@
       window.onload = loadCart;
     </script>
   </body>
+=======
+<html>
+<head>
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Your Shopping Cart</h1>
+    <table id="cartTable">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td>Product Name</td>
+            <td><input type="number" value="1"></td>
+            <td>$10.00</td>
+            <td>
+                <button>Edit</button>
+                <button>Remove</button>
+            </td>
+        </tr>
+    </table>
+    <p id="notification">Some items may be out of stock.</p>
+</body>
 </html>

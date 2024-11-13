@@ -3,90 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Search Engine</title>
-    <style>
-      /* Add styling here */
-    </style>
+    <title>Product Search</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Search Form -->
-    <form id="searchForm">
-      <h1>Product Search</h1>
-      <label for="searchInput">Enter Product Name or Category:</label>
-      <input type="text" id="searchInput" name="searchInput" required />
+    <div class="search-container">
+      <h1>Find Your Style</h1>
 
-      <label for="userType">User Type:</label>
-      <select id="userType" name="userType" required>
-        <option value="customer">Customer</option>
-        <option value="administrator">Administrator</option>
-      </select>
+      <form id="searchForm" class="search-form">
+        <label for="keywords">Search for products:</label>
+        <input
+          type="text"
+          id="keywords"
+          name="keywords"
+          placeholder="Enter keywords (e.g., 'dress', 'shoes')"
+        />
 
-      <button type="submit">Search</button>
-    </form>
+        <div class="filters">
+          <label for="category">Category:</label>
+          <select id="category" name="category">
+            <option value="all">All</option>
+            <option value="tops">Tops</option>
+            <option value="bottoms">Bottoms</option>
+            <option value="accessories">Accessories</option>
+            <option value="shoes">Shoes</option>
+          </select>
 
-    <!-- Search Results Area -->
-    <div id="searchResults">
-      <h2>Search Results:</h2>
-      <div id="resultsContainer"></div>
+          <label for="sort">Sort by:</label>
+          <select id="sort" name="sort">
+            <option value="relevance">Relevance</option>
+            <option value="price-low-high">Price: Low to High</option>
+            <option value="price-high-low">Price: High to Low</option>
+            <option value="new-arrivals">New Arrivals</option>
+          </select>
+        </div>
+
+        <button type="submit">Search</button>
+      </form>
+
+      <div id="searchResults" class="search-results">
+        <!-- Search results will appear here -->
+      </div>
     </div>
-
-    <script>
-      document
-        .getElementById("searchForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-
-          // Retrieve form values
-          const searchQuery = document.getElementById("searchInput").value;
-          const userType = document.getElementById("userType").value;
-
-          // Dummy data for demonstration - replace with actual database query response
-          const sampleData = {
-            products: [
-              {
-                ProductID: 1,
-                ProductName: "Stylish Hat",
-                Description: "A trendy hat for all seasons",
-                Prices: "$20",
-                Category: "Accessories",
-                StockQuantity: 100,
-                CreatedAt: "2024-01-15",
-                LastUpdated: "2024-09-10",
-                WarehouseLocation: "Aisle 4",
-              },
-              // Add more product data here
-            ],
-          };
-
-          // Clear previous results
-          document.getElementById("resultsContainer").innerHTML = "";
-
-          // Process results based on user type
-          sampleData.products.forEach((product) => {
-            const productDiv = document.createElement("div");
-            productDiv.className = "product";
-
-            // Add common fields for both customers and administrators
-            productDiv.innerHTML = `
-                    <h3>${product.ProductName}</h3>
-                    <p><strong>Description:</strong> ${product.Description}</p>
-                    <p><strong>Price:</strong> ${product.Prices}</p>
-                    <p><strong>Category:</strong> ${product.Category}</p>
-                `;
-
-            // Additional fields for administrators only
-            if (userType === "administrator") {
-              productDiv.innerHTML += `
-                        <p><strong>Stock Quantity:</strong> ${product.StockQuantity}</p>
-                        <p><strong>Created At:</strong> ${product.CreatedAt}</p>
-                        <p><strong>Last Updated:</strong> ${product.LastUpdated}</p>
-                        <p><strong>Warehouse Location:</strong> ${product.WarehouseLocation}</p>
-                    `;
-            }
-
-            document.getElementById("resultsContainer").appendChild(productDiv);
-          });
-        });
-    </script>
   </body>
+<html>
+<head>
+    <title>Product Search</title>
+</head>
+<body>
+    <h1>Search for Products</h1>
+    <form id="searchForm">
+        <label for="keywords">Enter keywords:</label>
+        <input type="text" id="keywords" name="keywords">
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResults">
+        <!-- Results will appear here -->
+    </div>
+</body>
 </html>
