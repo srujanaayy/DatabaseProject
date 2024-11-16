@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <h1>Shopping Cart</h1>
@@ -24,7 +23,8 @@
       </tbody>
     </table>
 
-    <button onclick="checkout()">Checkout</button>
+    <button onclick="goToCheckout()">Checkout</button>
+    <!-- Updated button to go to checkout -->
 
     <script>
       // Load cart items from localStorage and display them
@@ -38,13 +38,13 @@
 
           // Create a row for each cart item
           const row = document.createElement("tr");
-          row.innerHTML = `
-          <td>${item.productName}</td>
-          <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></td>
-          <td>$${item.price}</td>
-          <td>$${totalPrice}</td>
-          <td><button onclick="removeFromCart(${index})">Remove</button></td>
-        `;
+          row.innerHTML = ` 
+            <td>${item.productName}</td>
+            <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></td>
+            <td>$${item.price}</td>
+            <td>$${totalPrice}</td>
+            <td><button onclick="removeFromCart(${index})">Remove</button></td>
+          `;
 
           cartItemsContainer.appendChild(row);
         });
@@ -66,40 +66,13 @@
         loadCart(); // Refresh the cart view
       }
 
-      // Checkout placeholder function
-      function checkout() {
-        alert("Proceeding to checkout...");
-        // Implement checkout functionality here
+      // Navigate to checkout page
+      function goToCheckout() {
+        window.location.href = "checkout.html"; // Redirect to checkout page
       }
 
       // Load cart when page is ready
       window.onload = loadCart;
     </script>
   </body>
-=======
-<html>
-<head>
-    <title>Shopping Cart</title>
-</head>
-<body>
-    <h1>Your Shopping Cart</h1>
-    <table id="cartTable">
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-            <td>Product Name</td>
-            <td><input type="number" value="1"></td>
-            <td>$10.00</td>
-            <td>
-                <button>Edit</button>
-                <button>Remove</button>
-            </td>
-        </tr>
-    </table>
-    <p id="notification">Some items may be out of stock.</p>
-</body>
 </html>
