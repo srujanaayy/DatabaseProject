@@ -6,3 +6,8 @@
 4. Run: python app.py
 5. Right click on the hyperlink (ex: http://127.0.0.1:5000)
 6. You should see the preliminary login screen ( Choose Admin or Customer )
+
+
+**ADMIN LOGIN**
+username: admin
+password: pass123
