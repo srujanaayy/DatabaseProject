@@ -18,8 +18,8 @@ $sql = "SELECT CardNumber
 
 $result = $conn->query($sql);
 if($result) {
-  while($row = $result --> fetch_assoc()) {
-    printf(); //print attributes
+  while($row = $result -> fetch_assoc()) {
+    printf("Card Number: %s\n", $row["CardNumber"]); //print attributes
   }
   $result->free();
 }
