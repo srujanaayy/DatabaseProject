@@ -1,5 +1,5 @@
 /* getdata1b.php */
-//need to add a update statement, database name and password
+//Set shipping fee to 0 if base price greater than 50 dollars
 ?php
 
 $cid = $_GET['CustomerID']; //possible injection: 123' OR 1 = 1 #
@@ -11,7 +11,7 @@ $conn = new mysqli("localhost", "root", "password", "db");
 
 $sql = "UPDATE Payment
         SET ShippingFee = 0
-        WHERE CustomerID = '$cid' AND PaymentID = '$pid'"
+        WHERE CustomerID = '$cid' AND PaymentID = '$pid' AND BasePrice >= 50"
 
 $result = $conn->query($sql);
 $conn->close();
