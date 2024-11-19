@@ -10,6 +10,8 @@
     />
   </head>
   <body>
+    <button onclick="goBack()" class="back-button">Back</button>
+
     <div class="welcome-banner">
       <h1>WELCOME TO RETAILSYNC</h1>
     </div>
@@ -27,10 +29,17 @@
         <input type="password" id="password" name="password" required />
 
         <button type="submit">Login</button>
+        <ul>
+          <li><a href="{{ url_for('register') }}"> Register</a></li>
+        <!-- <p class="register">
+          Don't have an account? <a href="register.html">Register here</a>
+        </p> -->
       </form>
-      <p class="register-link">
-        Don't have an account? <a href="register.html">Register here</a>
-      </p>
     </div>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
   </body>
 </html>
