@@ -7,7 +7,11 @@ $pid = $_GET['PaymentID'];
 
 
 //new mysqli(name of host, mySQL username, password, name of database)
-$conn = new mysqli("localhost", "root", "password", "db");
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$db = "db";
+$conn = new mysqli($servername, $username, $password, $db);
 
 $sql = "UPDATE Payment
         SET ShippingFee = 0
