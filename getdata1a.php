@@ -6,7 +6,11 @@ $CustomerID = $_GET['CustomerID'];
 //will let someone get card number of customer without knowing their ID
 
 //new mysqli(name of host, mySQL username, password, name of database)
-$conn = new mysqli("localhost", "root", "password", "db");
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$db = "db";
+$conn = new mysqli($servername, $username, $password, $db);
 
 $sql = "SELECT CardNumber
         FROM Customer
