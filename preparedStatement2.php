@@ -21,3 +21,4 @@ if($stmt = $conn->prepare($sql)) {
     printf("%d \n", $CardNumber);
     }
 }
+?>
