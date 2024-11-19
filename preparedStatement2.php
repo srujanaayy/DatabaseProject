@@ -18,7 +18,7 @@ if($stmt = $conn->prepare($sql)) {
   $stmt->execute();
   $stmt->bind_result($CardNumber);
   while($stmt->fetch()) {
-    printf("%d \n", $CardNumber);
+    printf("%s \n", $CardNumber);
     }
 }
 ?>
