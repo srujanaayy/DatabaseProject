@@ -1,6 +1,6 @@
 /* getdata1a.php */
 //add database name and password
-?php
+<?php
 $CustomerID = $_GET['CustomerID']; 
 //SQL interjection if user input is something like 123' OR 1 = 1 #
 //will let someone get card number of customer without knowing their ID
@@ -20,3 +20,4 @@ if($result) {
   $result->free();
 }
 $conn->close();
+?>
