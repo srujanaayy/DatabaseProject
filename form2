@@ -14,7 +14,7 @@
 
             <div>
                 <label for="CustomerID">CustomerID:</label>
-                <input type="text" id="CustomerID" name="CustomerID" placeholder="Enter your CustomerID" required>
+                <input type="number" id="CustomerID" name="CustomerID" placeholder="Enter your CustomerID" required>
             </div>
 
             <div class="wrap">
