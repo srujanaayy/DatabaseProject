@@ -20,5 +20,7 @@ if($stmt = $conn->prepare($sql)) {
   while($stmt->fetch()) {
     printf("%s \n", $CardNumber);
     }
+  $stmt->close();
 }
+$conn->close();
 ?>
