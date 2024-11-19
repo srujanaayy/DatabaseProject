@@ -14,7 +14,7 @@ $conn = new mysqli($servername, $username, $password, $db);
 
 $sql = "SELECT CardNumber
         FROM Customer
-        WHERE CustomerID = '$CustomerID' "
+        WHERE CustomerID = '$CustomerID' ";
 
 $result = $conn->query($sql);
 if($result) {
