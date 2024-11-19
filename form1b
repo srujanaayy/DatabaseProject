@@ -17,8 +17,8 @@
                 <input type="text" id="CustomerID" name="CustomerID" placeholder="Enter your CustomerID" required>
             </div>
              <div>
-                <label for="CustomerID">CustomerID:</label>
-                <input type="text" id="CustomerID" name="CustomerID" placeholder="Enter your CustomerID" required>
+                <label for="PaymentID">PaymentID:</label>
+                <input type="text" id="PaymentID" name="PaymentID" placeholder="Enter your PaymentID" required>
             </div>
 
             <div class="wrap">
