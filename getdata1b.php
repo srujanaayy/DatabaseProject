@@ -15,7 +15,7 @@ $conn = new mysqli($servername, $username, $password, $db);
 
 $sql = "UPDATE Payment
         SET ShippingFee = 0
-        WHERE CustomerID = '$cid' AND PaymentID = '$pid' AND BasePrice >= 50"
+        WHERE CustomerID = '$cid' AND PaymentID = '$pid' AND BasePrice >= 50";
 
 $result = $conn->query($sql);
 $conn->close();
