@@ -1,6 +1,6 @@
 /* getdata1b.php */
 //Set shipping fee to 0 if base price greater than 50 dollars
-?php
+<?php
 
 $cid = $_GET['CustomerID']; //possible injection: 123' OR 1 = 1 #
 $pid = $_GET['PaymentID'];
@@ -15,3 +15,4 @@ $sql = "UPDATE Payment
 
 $result = $conn->query($sql);
 $conn->close();
+?>
