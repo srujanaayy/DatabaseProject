@@ -24,15 +24,6 @@ class Product(db.Model):
     LastUpdated = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
     WarehouseLocation = db.Column(db.String(255))
 
-class Customer(db.Model):
-    __tablename__ = 'Customer'
-    CustomerID = db.Column(db.Integer, primary_key=True)
-    FirstName = db.Column(db.String(50))
-    LastName = db.Column(db.String(50))
-    EmailAddress = db.Column(db.String(100))
-    PhoneNumber = db.Column(db.String(15))
-    CardNumber = db.Column(db.String(19), db.ForeignKey('CardInformation.CardNumber'))
-
 class Order(db.Model):
     __tablename__ = 'Orders'
     OrderID = db.Column(db.Integer, primary_key=True)
@@ -47,6 +38,20 @@ class OrderedItem(db.Model):
     ProductID = db.Column(db.Integer, db.ForeignKey('Product.ProductID'), primary_key=True)
     Quantity = db.Column(db.Integer, nullable=False)
     Price = db.Column(db.Numeric(10, 2), nullable=False)
+class CardInformation(db.Model):
+    __tablename__ = 'CardInformation'
+    CardNumber = db.Column(db.String(19), primary_key=True)
+    ExpiryDate = db.Column(db.String(5), nullable=False)
+    CVV = db.Column(db.String(4), nullable=False)
+
+class Customer(db.Model):
+    __tablename__ = 'Customer'
+    CustomerID = db.Column(db.Integer, primary_key=True)
+    FirstName = db.Column(db.String(50))
+    LastName = db.Column(db.String(50))
+    EmailAddress = db.Column(db.String(100))
+    PhoneNumber = db.Column(db.String(15))
+    CardNumber = db.Column(db.String(19), db.ForeignKey('CardInformation.CardNumber'))
 
 def serialize_product(product): 
     return { 
@@ -206,28 +211,106 @@ def search():
     return render_template('search.html', products=products)
 
 
-@app.route('/process-checkout', methods=['POST'])
-def process_checkout():
-    if request.method == 'POST':
-        full_name = request.form['full-name']
-        address = request.form['address']
-        city = request.form['city']
-        state = request.form['state']
-        zip_code = request.form['zip']
-        country = request.form['country']
-        credit_card = request.form['credit-card']
-        expiry = request.form['expiry']
-        cvv = request.form['cvv']
-        
-        # Add your order processing logic here
-        
-        return 'Order successfully placed!'
-    return redirect(url_for('checkout'))
+
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return render_template('logout.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        # Get form data
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email_address = request.form['email_address']
+        phone_number = request.form['phone_number']
+        card_number = request.form['card_number']
+        expiry_date = request.form['expiry_date']
+        cvv = request.form['cvv']
+
+        # Check if CardNumber exists in CardInformation
+        card_info = CardInformation.query.filter_by(CardNumber=card_number).first()
+        if not card_info:
+            # Insert card information if it doesn't exist
+            card_info = CardInformation(CardNumber=card_number, ExpiryDate=expiry_date, CVV=cvv)
+            db.session.add(card_info)
+            db.session.commit()
+
+        # Now insert the customer
+        new_customer = Customer(
+            FirstName=first_name,
+            LastName=last_name,
+            EmailAddress=email_address,
+            PhoneNumber=phone_number,
+            CardNumber=card_number
+        )
+
+        # Add and commit to the database
+        try:
+            db.session.add(new_customer)
+            db.session.commit()
+            return redirect(url_for('customer_dashboard'))  # Redirect to login page or another appropriate page
+        except Exception as e:
+            # Handle errors
+            db.session.rollback()
+            return f"An error occurred: {e}"
+
+    return render_template('register.html')
+
+
+@app.route('/checkout', methods=['GET'])
+def checkout():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('checkout.html')
+
+
+@app.route('/process_checkout', methods=['POST'])
+def process_checkout():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    # Get form data
+    full_name = request.form['full_name']
+    address = request.form['address']
+    city = request.form['city']
+    state = request.form['state']
+    zip_code = request.form['zip']
+    country = request.form['country']
+    email_address = request.form['email_address']
+    credit_card = request.form['credit_card']
+
+
+    # Get cart items from session or local storage
+    cart = session.get('cart', [])
+
+    # Process the order
+    customer = Customer.query.filter_by(EmailAddress=session['username']).first()  # Assuming customer is logged in
+    new_order = Order(CustomerID=customer.CustomerID, ShippingAddress=address, Status='Pending')
+    db.session.add(new_order)
+    db.session.commit()
+
+    for item in cart:
+        product = Product.query.filter_by(ProductName=item['productName']).first()
+        new_ordered_item = OrderedItem(
+            OrderID=new_order.OrderID,
+            ProductID=product.ProductID,
+            Quantity=item['quantity'],
+            Price=item['price']
+        )
+        product.StockQuantity -= item['quantity']
+        db.session.add(new_ordered_item)
+        db.session.commit()
+
+    # Clear the cart after processing
+    session.pop('cart', None)
+
+    return 'Order successfully placed!'
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
