@@ -4,21 +4,141 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Customer Dashboard</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <style>
+      /* Add your CSS here */
+      :root {
+        --primary-color: #c0392b;
+        --secondary-color: white;
+        --background-color: #ff7e5f;
+        --text-color: #2c3e50;
+        --border-color: #ddd;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-color);
+      }
+
+      .admin-container {
+        min-height: 100vh;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: var(--secondary-color);
+      }
+
+      .logout a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border: 2px solid white;
+        border-radius: 4px;
+      }
+
+      .logout a:hover {
+        background-color: white;
+        color: var(--primary-color);
+      }
+
+      main {
+        padding: 2rem;
+      }
+
+      .dashboard-overview {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .stat-box {
+        background-color: var(--background-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .stat-box h3 {
+        margin: 0;
+        color: var(--text-color);
+        font-size: 1.1rem;
+      }
+
+      .stat-box p {
+        margin: 0.5rem 0 0;
+        font-size: 2rem;
+        color: var(--secondary-color);
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    <div class="dashboard-container">
-      <h1>Customer Dashboard</h1>
-      <nav>
-        <ul>
-          <li><a href="{{ url_for('shopping_cart') }}">Shopping Cart</a></li>
-          <!-- <li><a href="{{ url_for('products') }}">Products</a></li> -->
-          <li><a href="{{ url_for('search') }}">Search</a></li>
-        </ul>
-      </nav>
+    <div class="admin-container">
+      <header>
+        <h1>Customer Dashboard</h1>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="{{ url_for('shopping_cart') }}">Shopping Cart</a></li>
+            <li><a href="{{ url_for('products') }}">Browse Products</a></li>
+            <li><a href="{{ url_for('orders') }}">My Orders</a></li>
+            <li><a href="{{ url_for('profile') }}">My Profile</a></li>
+          </ul>
+        </nav>
+        <div class="logout">
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </header>
+      <main>
+        <section class="dashboard-overview">
+          <h2>Dashboard Overview</h2>
+          <div class="stats">
+            <div class="stat-box">
+              <h3>Orders Placed</h3>
+              <p>{{ orders_count if orders_count else 0 }}</p>
+            </div>
+            <div class="stat-box">
+              <h3>Cart Items</h3>
+              <p>{{ cart_items if cart_items else 0 }}</p>
+            </div>
+            <div class="stat-box">
+              <h3>Wishlist Items</h3>
+              <p>{{ wishlist_items if wishlist_items else 0 }}</p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   </body>
 </html>

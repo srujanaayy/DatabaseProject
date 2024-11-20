@@ -3,37 +3,80 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orders</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <title>Order Management System</title>
+    <style>
+      /* Add some basic styling */
+      :root {
+        --background-color: white;
+        --danger-color: #ff7e5f;
+        --danger-hover: #c0392b;
+        --text-color: #2c3e50;
+        --border-color: #ddd;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: var(--danger-color);
+      }
+
+      /* ... rest of CSS styles ... */
+    </style>
   </head>
   <body>
-    <h1>Orders Management</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer ID</th>
-          <th>Date</th>
-          <th>Order Time</th>
-          <th>Status</th>
-          <th>Shipping Address</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in orders %}
-        <tr>
-          <td>{{ order.OrderID }}</td>
-          <td>{{ order.CustomerID }}</td>
-          <td>{{ order.Date }}</td>
-          <td>{{ order.OrderTime }}</td>
-          <td>{{ order.Status }}</td>
-          <td>{{ order.ShippingAddress }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <h1>Order Management System</h1>
+    
+    <div class="container">
+      <div class="left-column">
+        <h2>Orders</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer ID</th>
+              <th>Date</th>
+              <th>Order Time</th>
+              <th>Status</th>
+              <th>Shipping Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td>{{ order.OrderID }}</td>
+              <td>{{ order.CustomerID }}</td>
+              <td>{{ order.Date }}</td>
+              <td>{{ order.OrderTime }}</td>
+              <td>{{ order.Status }}</td>
+              <td>{{ order.ShippingAddress }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="right-column">
+        <h2>Search Orders</h2>
+        <form id="orderSearchForm">
+          <label for="orderNumber">Order Number:</label>
+          <input type="text" id="orderNumber">
+          
+          <label for="customerName">Customer Name:</label>
+          <input type="text" id="customerName">
+          
+          <label for="date">Date:</label>
+          <input type="date" id="date">
+          
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Function to handle search form submission
+      document.getElementById('orderSearchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Add your search functionality here
+      });
+    </script>
   </body>
 </html>
