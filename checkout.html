@@ -139,6 +139,10 @@
             outline: none;
             box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
         }
+
+        input.invalid {
+            border-color: red;
+        }
     </style>
 </head>
 <body>
@@ -264,41 +268,82 @@
 
         // New function to process the checkout
         function processCheckout() {
-            // Validate all forms
-            const shippingForm = document.getElementById('shipping-form');
-            const paymentForm = document.getElementById('payment-form');
+            // Get all required inputs
+            const requiredInputs = document.querySelectorAll('input[required]');
+            let isValid = true;
 
-            if (!shippingForm.checkValidity() || !paymentForm.checkValidity()) {
+            // Check each required input
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('invalid');
+                } else {
+                    input.classList.remove('invalid');
+                }
+            });
+
+            if (!isValid) {
                 alert('Please fill in all required fields');
                 return;
             }
 
-            // Collect shipping information
-            const shippingInfo = {
-                name: document.getElementById('customer-name').value,
-                email: document.getElementById('customer-email').value,
-                address: document.getElementById('customer-address').value,
-                city: document.getElementById('customer-city').value,
-                state: document.getElementById('customer-state').value,
-                zip: document.getElementById('customer-zip').value
+            // Add some basic validation for specific fields
+            const cardNumber = document.getElementById('card-number').value;
+            const cardExpiry = document.getElementById('card-expiry').value;
+            const cardCVV = document.getElementById('card-cvv').value;
+
+            // Basic validation patterns
+            const cardNumberPattern = /^\d{16}$/;  // 16 digits
+            const cardExpiryPattern = /^\d{2}\/\d{2}$/;  // MM/YY format
+            const cardCVVPattern = /^\d{3}$/;  // 3 digits
+
+            if (!cardNumberPattern.test(cardNumber)) {
+                alert('Please enter a valid 16-digit card number');
+                return;
+            }
+
+            if (!cardExpiryPattern.test(cardExpiry)) {
+                alert('Please enter expiry date in MM/YY format');
+                return;
+            }
+
+            if (!cardCVVPattern.test(cardCVV)) {
+                alert('Please enter a valid 3-digit CVV');
+                return;
+            }
+
+            // If all validations pass, create order object
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const orderDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            
+            const order = {
+                orderId: 'O' + Date.now(), // Generate unique order ID using timestamp
+                customerId: document.getElementById('customer-name').value,
+                orderDate: orderDate,
+                quantity: cart.reduce((total, item) => total + item.quantity, 0),
+                totalPrice: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+                orderStatus: 'Pending',
+                shippingAddress: {
+                    address: document.getElementById('customer-address').value,
+                    city: document.getElementById('customer-city').value,
+                    state: document.getElementById('customer-state').value,
+                    zip: document.getElementById('customer-zip').value
+                }
             };
 
-            // Collect payment information
-            const paymentInfo = {
-                cardNumber: document.getElementById('card-number').value,
-                expiry: document.getElementById('card-expiry').value,
-                cvv: document.getElementById('card-cvv').value
-            };
+            // Get existing orders or initialize empty array
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            
+            // Add new order
+            orders.push(order);
+            
+            // Save updated orders
+            localStorage.setItem("orders", JSON.stringify(orders));
 
-            // Here you would typically send this information to your server
-            // For demo purposes, we'll just show an alert
+            // Clear cart and redirect
             alert('Order placed successfully!');
-            
-            // Clear the cart
             localStorage.removeItem('cart');
-            
-            // Redirect to confirmation page (you'll need to create this)
-            // window.location.href = 'confirmation.html';
+            window.location.href = 'confirmation.html';
         }
 
         // Load cart when page is ready
