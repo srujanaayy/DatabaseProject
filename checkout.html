@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        /* Main colors */
+        :root {
+     /* Slightly lighter blue for hover states */            --background-color: white;     /* Change to white to match other pages */
+            --danger-color: #ff7e5f;       /* Red for delete/remove buttons */
+            --danger-hover: #c0392b;       /* Darker red for hover states */
+            --text-color: #2c3e50;         /* Dark blue for text */
+            --border-color: #ddd;          /* Light gray for borders */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--danger-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        #checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        #checkout-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .remove-btn {
+            background-color: var(--danger-color);
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: var(--danger-hover);
+        }
+
+        /* Add hover effects for inputs */
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Checkout</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Order Summary</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Cart items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Shipping Information</h2>
+            <form id="shipping-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-name">Full Name:</label>
+                        <input type="text" id="customer-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-email">Email:</label>
+                        <input type="email" id="customer-email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="customer-address">Address:</label>
+                    <input type="text" id="customer-address" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-city">City:</label>
+                        <input type="text" id="customer-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-state">State:</label>
+                        <input type="text" id="customer-state" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-zip">ZIP Code:</label>
+                        <input type="text" id="customer-zip" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Payment Information</h2>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" maxlength="16" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="card-expiry">Expiration Date:</label>
+                        <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="card-cvv">CVV:</label>
+                        <input type="text" id="card-cvv" maxlength="3" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <button id="checkout-btn" onclick="processCheckout()">Place Order</button>
+    </div>
+
+    <script>
+        // Load cart items from localStorage and display them
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const cartItemsContainer = document.getElementById("cart-items");
+            cartItemsContainer.innerHTML = ""; // Clear existing items
+
+            cart.forEach((item, index) => {
+                const totalPrice = item.price * item.quantity;
+
+                // Create a row for each cart item
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.productName}</td>
+                    <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>$${totalPrice.toFixed(2)}</td>
+                    <td><button onclick="removeFromCart(${index})">Remove</button></td>
+                `;
+
+                cartItemsContainer.appendChild(row);
+            });
+        }
+
+        // Update quantity in the cart
+        function updateQuantity(index, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            cart[index].quantity = parseInt(newQuantity);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart(); // Refresh the cart view
+        }
+
+        // Remove an item from the cart
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            cart.splice(index, 1); // Remove item at index
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart(); // Refresh the cart view
+        }
+
+        // New function to process the checkout
+        function processCheckout() {
+            // Validate all forms
+            const shippingForm = document.getElementById('shipping-form');
+            const paymentForm = document.getElementById('payment-form');
+
+            if (!shippingForm.checkValidity() || !paymentForm.checkValidity()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Collect shipping information
+            const shippingInfo = {
+                name: document.getElementById('customer-name').value,
+                email: document.getElementById('customer-email').value,
+                address: document.getElementById('customer-address').value,
+                city: document.getElementById('customer-city').value,
+                state: document.getElementById('customer-state').value,
+                zip: document.getElementById('customer-zip').value
+            };
+
+            // Collect payment information
+            const paymentInfo = {
+                cardNumber: document.getElementById('card-number').value,
+                expiry: document.getElementById('card-expiry').value,
+                cvv: document.getElementById('card-cvv').value
+            };
+
+            // Here you would typically send this information to your server
+            // For demo purposes, we'll just show an alert
+            alert('Order placed successfully!');
+            
+            // Clear the cart
+            localStorage.removeItem('cart');
+            
+            // Redirect to confirmation page (you'll need to create this)
+            // window.location.href = 'confirmation.html';
+        }
+
+        // Load cart when page is ready
+        window.onload = loadCart;
+    </script>
+</body>
+</html>

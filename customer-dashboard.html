@@ -4,17 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Customer Dashboard</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Customer Dashboard</h1>
-    <nav>
-      <ul>
-        <li><a href="shoppingCart.html">Manage Customers</a></li>
-        <li><a href="products.html">Manage Products</a></li>
-        <li><a href="orders.html">Manage Orders</a></li>
-        <li><a href="inventory.html">Manage Inventory</a></li>
-      </ul>
-    </nav>
+    <div class="admin-container">
+      <header>
+        <h1>Customer Dashboard</h1>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="shopping-cart.html">Shopping Cart</a></li>
+            <li><a href="products.html">Browse Products</a></li>
+            <li><a href="orders.html">My Orders</a></li>
+            <li><a href="profile.html">My Profile</a></li>
+          </ul>
+        </nav>
+        <div class="logout">
+          <a href="logout.html">Logout</a>
+        </div>
+      </header>
+      <main>
+        <section class="dashboard-overview">
+          <h2>Dashboard Overview</h2>
+          <div class="stats">
+            <div class="stat-box">
+              <h3>Orders Placed</h3>
+              <p>12</p>
+            </div>
+            <div class="stat-box">
+              <h3>Cart Items</h3>
+              <p>3</p>
+            </div>
+            <div class="stat-box">
+              <h3>Wishlist Items</h3>
+              <p>8</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
