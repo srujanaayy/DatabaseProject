@@ -196,7 +196,9 @@ def shopping_cart():
 def products():
     if 'username' not in session or session['username'] == 'admin':
         return redirect(url_for('login'))
-    return render_template('products.html')
+    products = Product.query.all()
+    return render_template('products.html', products=products)
+
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
