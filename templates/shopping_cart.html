@@ -4,52 +4,222 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --background-color: white;
+        --danger-color: #ff7e5f;
+        --danger-hover: #c0392b;
+        --text-color: #2c3e50;
+        --border-color: #ddd;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f6fa;
+        color: var(--text-color);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .page-header {
+        background-color: var(--danger-color);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 600;
+      }
+
+      .cart-container {
+        background-color: var(--background-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        position: relative;
+        padding-bottom: 100px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+      }
+
+      th {
+        background-color: var(--text-color);
+        color: white;
+        padding: 1rem;
+        text-align: left;
+      }
+
+      td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      input[type="number"] {
+        width: 80px;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+      }
+
+      .remove-btn {
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .remove-btn:hover {
+        background-color: var(--danger-hover);
+      }
+
+      .checkout-btn {
+        background-color: var(--text-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        width: 200px;
+      }
+
+      .checkout-btn:hover {
+        background-color: var(--danger-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .empty-cart {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-color);
+        font-size: 1.2rem;
+      }
+
+      .cart-summary {
+        margin-top: 2rem;
+        text-align: right;
+        font-size: 1.2rem;
+        padding-top: 1rem;
+        border-top: 2px solid var(--border-color);
+        margin-bottom: 2rem;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cart-container {
+        animation: fadeIn 0.5s ease-out;
+      }
+    </style>
   </head>
   <body>
-    <h1>Shopping Cart</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th>Quantity</th>
-          <th>Unit Price</th>
-          <th>Total Price</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="cart-items">
-        <!-- Cart items will be dynamically added here -->
-      </tbody>
-    </table>
+    <div class="page-header">
+      <h1>Shopping Cart</h1>
+    </div>
 
-    <button onclick="goToCheckout()">Checkout</button>
-    <!-- Updated button to go to checkout -->
+    <div class="container">
+      <div class="cart-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Total Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+          </tbody>
+        </table>
+        <div id="cart-summary" class="cart-summary">
+          <!-- Total will be added here -->
+        </div>
+        <button class="checkout-btn" onclick="goToCheckout()">Checkout</button>
+      </div>
+    </div>
 
     <script>
-      // Load cart items from localStorage and display them
       function loadCart() {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const cartItemsContainer = document.getElementById("cart-items");
-        cartItemsContainer.innerHTML = ""; // Clear existing items
+        const cartSummary = document.getElementById("cart-summary");
+        cartItemsContainer.innerHTML = "";
+
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = `
+            <tr>
+              <td colspan="5" class="empty-cart">Your cart is empty</td>
+            </tr>`;
+          cartSummary.innerHTML = "";
+          return;
+        }
+
+        let totalAmount = 0;
 
         cart.forEach((item, index) => {
           const totalPrice = item.price * item.quantity;
+          totalAmount += totalPrice;
 
-          // Create a row for each cart item
           const row = document.createElement("tr");
           row.innerHTML = `
-                    <td>${item.productName}</td>
-                    <td><input type="number" value="${
-                      item.quantity
-                    }" min="1" onchange="updateQuantity(${index}, this.value)"></td>
-                    <td>$${item.price.toFixed(2)}</td>
-                    <td>$${totalPrice.toFixed(2)}</td>
-                    <td><button onclick="removeFromCart(${index})">Remove</button></td>
-                `;
-
+            <td>${item.productName}</td>
+            <td>
+              <input type="number" value="${item.quantity}" min="1" 
+                onchange="updateQuantity(${index}, this.value)">
+            </td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>$${totalPrice.toFixed(2)}</td>
+            <td>
+              <button class="remove-btn" onclick="removeFromCart(${index})">
+                Remove
+              </button>
+            </td>
+          `;
           cartItemsContainer.appendChild(row);
         });
+
+        cartSummary.innerHTML = `
+          <div>
+            <strong>Total Amount: $${totalAmount.toFixed(2)}</strong>
+          </div>
+        `;
       }
 
       // Update quantity in the cart
@@ -70,7 +240,7 @@
 
       // Navigate to checkout page
       function goToCheckout() {
-        window.location.href = "checkout.html"; // Redirect to checkout page
+        window.location.href = "/checkout.html"; // Redirect to checkout page
       }
 
       // Load cart when page is ready
