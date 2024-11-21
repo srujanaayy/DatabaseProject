@@ -1,17 +1,138 @@
 /* General Body Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #ff7e5f; /* Solid orange background */
+  background: linear-gradient(
+    135deg,
+    #ff7e5f,
+    #c0392b
+  ); /* Gradient background */
   margin: 0;
-  padding: 20px;
   color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  padding: 0;
 }
 
 /* Container for Centered Content */
+.login-container {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Header Styles */
+h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+p {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Button Styles */
+.login-button {
+  background-color: #ff7e5f;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 90%;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.login-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-button.admin {
+  background-color: #2c3e50;
+}
+
+.login-button.admin:hover {
+  background-color: #1a252f;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Table styles */
+#products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  text-align: left;
+}
+
+#products-table th,
+#products-table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+#products-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+#products-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#products-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+#products-table button {
+  background-color: #ff7e5f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#products-table button:hover {
+  background-color: #c0392b;
+}
+
+/* General Container */
 .container {
   max-width: 800px;
   margin: 0 auto;
