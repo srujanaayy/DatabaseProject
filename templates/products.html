@@ -11,18 +11,36 @@
   </head>
   <body>
     <h1>Products</h1>
-    <div id="products-list">
-      <div class="product">
-        <h3>Stylish Hat</h3>
-        <p>Price: $20</p>
-        <button onclick="addToCart('Stylish Hat', 20)">Add to Cart</button>
-      </div>
-      <div class="product">
-        <h3>Classic T-Shirt</h3>
-        <p>Price: $15</p>
-        <button onclick="addToCart('Classic T-Shirt', 15)">Add to Cart</button>
-      </div>
-    </div>
+    <table id="products-table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Add to Cart</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.ProductName }}</td>
+          <td>{{ product.ProdDescription }}</td>
+          <td>${{ product.Price }}</td>
+          <td>{{ product.Category }}</td>
+          <td>{{ product.Brand }}</td>
+          <td>
+            <button
+              onclick="addToCart('{{ product.ProductName }}', {{ product.Price }})"
+            >
+              Add to Cart
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
     <script>
       function addToCart(productName, price) {
