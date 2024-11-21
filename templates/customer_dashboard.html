@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Customer Dashboard</title>
     <style>
-      /* Add your CSS here */
       :root {
         --primary-color: #c0392b;
         --secondary-color: white;
@@ -73,7 +72,7 @@
         background-color: white;
         padding: 2rem;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       .stats {
@@ -112,8 +111,6 @@
           <ul class="nav-links">
             <li><a href="{{ url_for('shopping_cart') }}">Shopping Cart</a></li>
             <li><a href="{{ url_for('products') }}">Browse Products</a></li>
-            <li><a href="{{ url_for('orders') }}">My Orders</a></li>
-            <li><a href="{{ url_for('profile') }}">My Profile</a></li>
           </ul>
         </nav>
         <div class="logout">
