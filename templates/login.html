@@ -4,25 +4,117 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <style>
+      :root {
+        --background-color: white;
+        --danger-color: #ff7e5f;
+        --danger-hover: #c0392b;
+        --text-color: #2c3e50;
+        --border-color: #ddd;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--danger-color),
+          var(--danger-hover)
+        );
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .login-container {
+        background-color: var(--background-color);
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      h2 {
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        font-size: 2.2rem;
+        font-weight: 600;
+      }
+
+      p {
+        color: var(--text-color);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+      }
+
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .login-button {
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 90%;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .login-button:hover {
+        background-color: var(--danger-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .login-button.admin {
+        background-color: var(--text-color);
+      }
+
+      .login-button.admin:hover {
+        background-color: #1a252f;
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .login-container {
+        animation: fadeIn 0.5s ease-out;
+      }
+    </style>
   </head>
   <body>
     <div class="login-container">
-      <h2>Login</h2>
+      <h2>Welcome Back</h2>
       <p>Please choose your login type:</p>
 
-      <div>
-        <a href="customer-login.html">
-          <button>Customer Login</button>
+      <div class="button-container">
+        <a href="{{ url_for('customer_login') }}" class="login-button">
+          Customer Login
         </a>
-      </div>
 
-      <div style="margin-top: 10px">
-        <a href="admin-login.html">
-          <button>Admin Login</button>
+        <a href="{{ url_for('admin_login') }}" class="login-button admin">
+          Admin Login
         </a>
       </div>
     </div>
