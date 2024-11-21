@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <button onclick="goBack()" class="back-button">Back</button>
+    <div class="register-container">
+      <h1>Register</h1>
+      <form method="POST" action="{{ url_for('register') }}">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" required />
+
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required />
+
+        <label for="email_address">Email Address</label>
+        <input type="email" id="email_address" name="email_address" required />
+
+        <label for="phone_number">Phone Number</label>
+        <input type="text" id="phone_number" name="phone_number" required />
+
+        <label for="card_number">Card Number</label>
+        <input type="text" id="card_number" name="card_number" required />
+
+        <label for="expiry_date">Expiry Date</label>
+        <input type="text" id="expiry_date" name="expiry_date" required />
+
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" name="cvv" required />
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>
