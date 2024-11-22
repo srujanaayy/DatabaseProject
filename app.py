@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -26,7 +27,7 @@ class Product(db.Model):
 
 class Order(db.Model):
     __tablename__ = 'Orders'
-    OrderID = db.Column(db.Integer, primary_key=True)
+    OrderId = db.Column(db.Integer, primary_key=True)
     CustomerID = db.Column(db.Integer, db.ForeignKey('Customer.CustomerID'))
     Date = db.Column(db.DateTime, default=db.func.current_timestamp())
     OrderTime = db.Column(db.DateTime, default=db.func.current_timestamp())
@@ -34,10 +35,13 @@ class Order(db.Model):
     ShippingAddress = db.Column(db.String(255))
 class OrderedItem(db.Model):
     __tablename__ = 'OrderedItem'
-    OrderID = db.Column(db.Integer, primary_key=True)
+    OrderedItemID = db.Column(db.Integer, primary_key=True)
+    Order_id = db.Column(db.Integer, db.ForeignKey('Orders.OrderId'), nullable=False)
     ProductID = db.Column(db.Integer, db.ForeignKey('Product.ProductID'), primary_key=True)
     Quantity = db.Column(db.Integer, nullable=False)
     Price = db.Column(db.Numeric(10, 2), nullable=False)
+    order = db.relationship('Order', backref=db.backref('ordered_items', lazy=True)) 
+    product = db.relationship('Product', backref=db.backref('ordered_items', lazy=True))
 class CardInformation(db.Model):
     __tablename__ = 'CardInformation'
     CardNumber = db.Column(db.String(19), primary_key=True)
@@ -52,7 +56,28 @@ class Customer(db.Model):
     EmailAddress = db.Column(db.String(100))
     PhoneNumber = db.Column(db.String(15))
     CardNumber = db.Column(db.String(19), db.ForeignKey('CardInformation.CardNumber'))
+    card_information = db.relationship('CardInformation', backref=db.backref('customers', lazy=True))
+class Payment(db.Model):
+    __tablename__ = 'Payment'
 
+    PaymentID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    CustomerID = db.Column(db.Integer, db.ForeignKey('Customer.CustomerID'), nullable=False)
+    BasePrice = db.Column(db.Numeric(10, 2), nullable=False)
+    Discount = db.Column(db.Numeric(5, 2), nullable=False, default=0.00)
+    Tax = db.Column(db.Numeric(5, 2), nullable=False)
+    ShippingFee = db.Column(db.Numeric(10, 2), nullable=False)
+    # Foreign key relationships
+    customer = db.relationship('Customer', backref=db.backref('payments', lazy=True))
+class Price(db.Model):
+    __tablename__ = 'Price'
+    
+    BasePrice = db.Column(db.Numeric(10, 2), nullable=False, primary_key=True)
+    Discount = db.Column(db.Numeric(5, 2), nullable=False, primary_key=True)
+    Tax = db.Column(db.Numeric(5, 2), nullable=False, primary_key=True)
+    ShippingFee = db.Column(db.Numeric(10, 2), nullable=False, primary_key=True)
+    TotalPrice = db.Column(db.Numeric(10, 2), nullable=False)
+
+    # Foreign key relationship with Payment
 def serialize_product(product): 
     return { 
         'ProductID': product.ProductID, 
@@ -262,56 +287,54 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/checkout', methods=['GET'])
+@app.route('/checkout')
 def checkout():
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('checkout.html')
 
 
-@app.route('/process_checkout', methods=['POST'])
-def process_checkout():
+
+@app.route('/place_order', methods=['POST'])
+def place_order():
+    # Ensure only logged-in users can place orders
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    # Get form data
-    full_name = request.form['full_name']
-    address = request.form['address']
-    city = request.form['city']
-    state = request.form['state']
-    zip_code = request.form['zip']
-    country = request.form['country']
-    email_address = request.form['email_address']
-    credit_card = request.form['credit_card']
+    # Get the logged-in user's name and other identifying info (e.g., email, if available)
+    user_name = session['username']
+    user_email = session.get('email')  # Optional if email is stored in session
 
+    # Check if the customer already exists in the Customer table
+    existing_customer = Customer.query.filter_by(EmailAddress=user_email).first()
 
-    # Get cart items from session or local storage
-    cart = session.get('cart', [])
+    if not existing_customer:
+        # If the customer does not exist, add them to the Customer table
+        new_customer = Customer(FirstName=user_name, EmailAddress=user_email)  # Add fields as per your schema
+        db.session.add(new_customer)
+        db.session.commit()
+        customer_id = new_customer.CustomerID  # Get the newly generated CustomerId
+    else:
+        customer_id = existing_customer.CustomerID
 
-    # Process the order
-    customer = Customer.query.filter_by(EmailAddress=session['username']).first()  # Assuming customer is logged in
-    new_order = Order(CustomerID=customer.CustomerID, ShippingAddress=address, Status='Pending')
+    # Get the order details from the form
+    status = request.form.get('status', 'Pending')  # Default status is 'Pending'
+    shipping_address = request.form.get('shipping_address')  # Get shipping address from the form
+
+    if not shipping_address:
+        return "Shipping addr is missing!", 400 
+    # Create a new Order object
+    new_order = Order(
+        CustomerID=customer_id,
+        Status=status,
+        ShippingAddress=shipping_address
+    )
+
+    # Add and commit the new order to the database
     db.session.add(new_order)
     db.session.commit()
 
-    for item in cart:
-        product = Product.query.filter_by(ProductName=item['productName']).first()
-        new_ordered_item = OrderedItem(
-            OrderID=new_order.OrderID,
-            ProductID=product.ProductID,
-            Quantity=item['quantity'],
-            Price=item['price']
-        )
-        product.StockQuantity -= item['quantity']
-        db.session.add(new_ordered_item)
-        db.session.commit()
-
-    # Clear the cart after processing
-    session.pop('cart', None)
-
-    return 'Order successfully placed!'
-
-
+    return redirect(url_for('orders'))
 
 
 if __name__ == '__main__':
