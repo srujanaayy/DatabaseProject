@@ -43,21 +43,20 @@
     </table>
 
     <script>
-      function addToCart(productName, price) {
+      function addToCart(productName, price, quantity) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        let existingProduct = cart.find(
+        const existingItem = cart.find(
           (item) => item.productName === productName
         );
-
-        if (existingProduct) {
-          existingProduct.quantity += 1;
+        if (existingItem) {
+          existingItem.quantity += quantity; // Increase quantity if already in cart
         } else {
-          cart.push({ productName: productName, price: price, quantity: 1 });
+          cart.push({ productName, price, quantity });
         }
 
         localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`${productName} has been added to the cart!`);
+        loadCart(); // Reload the cart to show the updated items
       }
     </script>
   </body>
